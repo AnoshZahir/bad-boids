@@ -3,16 +3,24 @@ A deliberately bad implementation of [Boids](http://dl.acm.org/citation.cfm?doid
 for use as an exercise on refactoring.
 """
 
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt # 2D plotting library.  pyplot provides a MATLAB-like interface.
 from matplotlib import animation
 import random
 
-# Deliberately terrible code for teaching purposes
+# boids_x=[random.uniform(-450,50.0) for x in range(50)] # return list of 50 random uniform bewteen (-450,50.0)
 
-boids_x=[random.uniform(-450,50.0) for x in range(50)]
-boids_y=[random.uniform(300.0,600.0) for x in range(50)]
-boid_x_velocities=[random.uniform(0,10.0) for x in range(50)]
+def generate_random_uniform(start, end, number):
+    return [random.uniform(start, end) for x in range(number)]
+    
+boids_x = generate_random_uniform(-450,50.0, 50)
+# boids_y = generate_random_uniform(300.0,600.0, 50)
+# boid_x_velocities = generate_random_uniform(0, 10.0, 50)
+# boid_y_velocities = generate_random_uniform(-20.0, 20.0, 50)
+
+boids_y=[random.uniform(300.0,600.0) for x in range(50)] 
+boid_x_velocities=[random.uniform(0,10.0) for x in range(50)] 
 boid_y_velocities=[random.uniform(-20.0,20.0) for x in range(50)]
+
 boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
 def update_boids(boids):

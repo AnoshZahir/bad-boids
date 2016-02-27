@@ -1,22 +1,21 @@
 from matplotlib import pyplot as plt
 from matplotlib import animation
-import random
+import numpy as np
 
 class Boids(object):
 
-    def __init__(self): 
-        boids_x = self.generate_random_uniform(-450,50.0, 50)
-        boids_y = self.generate_random_uniform(300.0,600.0, 50)
-        boid_x_velocities = self.generate_random_uniform(0, 10.0, 50)
-        boid_y_velocities = self.generate_random_uniform(-20.0, 20.0, 50)
-        self.boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
+    def __init__(self, no_of_boids = 50):
+        self.no_of_boids = no_of_boids
+        self.positions = self.new_flock(self.no_of_boids, np.array([-450, 300]), np.array([50,600]))
+        self.velocities = self.new_flock(self.no_of_boids, np.array([0, -20]), np.array([10,20]))
+                
+    def new_flock(self, no_of_boids, lower_limits, upper_limits):
+        width = upper_limits - lower_limits
+        return (lower_limits[:, np.newaxis] + np.random.rand(2,no_of_boids)*width[:, np.newaxis])
         
-            
-    def generate_random_uniform(self, start, end, number):
-        return [random.uniform(start, end) for x in range(number)]
-
-    def update_boids(self, boids):
-	xs,ys,xvs,yvs=boids
+    def update_boids(self, positions, velocities):
+	xs,ys = positions
+	xvs,yvs= velocities
 	# Fly towards the middle
 	for i in range(len(xs)):
 		for j in range(len(xs)):
@@ -44,17 +43,14 @@ class Boids(object):
     def run_simulation(self):
          figure = plt.figure()
          axes = plt.axes(xlim=(-500,1500), ylim=(-500,1500))
-         self.scatter = axes.scatter(self.boids[0],self.boids[1])
+         self.scatter = axes.scatter(self.positions[0,:], self.positions[1, :])
          anim = animation.FuncAnimation(figure, self.animate, frames=50, interval=50)
          plt.show()
 
     def animate(self, frame):
-        self.update_boids(self.boids)
-        self.scatter.set_offsets(zip(self.boids[0],self.boids[1]))
-
-
+        self.update_boids(self.positions, self.velocities)
+        self.scatter.set_offsets(zip(self.positions.transpose()))
 
 if __name__ == "__main__":
     boids = Boids()
     boids.run_simulation()
-   

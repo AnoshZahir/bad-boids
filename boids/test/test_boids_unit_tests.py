@@ -1,11 +1,21 @@
-from ..bad_boids import boids
-from nose.tools import assert_almost_equals
-import random
+from ..boids import Boids
 
-from nose.tools import assert_almost_equals
-def test_generate_random_uniform():
-    random.seed(1)
-    x = [random.uniform(-450,50.0) for x in range(50)]
-    random.seed(1)
-    x1 = generate_random_uniform(-450,50.0, 50)
-    assert_almost_equals(x, x1, delta = 0.01)
+import numpy as np
+from numpy import testing as npt
+from mock import patch
+import yaml
+import os
+ 
+def test_new_flock():
+    with open(os.path.join(os.path.dirname(__file__),'fixtures', 'unit_tests_data.yaml')) as dataset:
+        new_flock_data = yaml.load(dataset)['test_new_flock']
+        
+        for data in new_flock_data:
+            rand = data.pop('rand')
+            positions  = data.pop('positions')
+            velocities = data.pop('velocities')
+    
+    with patch.object(np.random, 'rand', return_value=rand) as mock_method:
+        boids=Boids()
+	npt.assert_array_equal(np.asarray(positions),  boids.positions)
+	npt.assert_array_equal(np.asarray(velocities), boids.velocities)

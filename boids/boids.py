@@ -1,17 +1,21 @@
 from matplotlib import pyplot as plt
+from matplotlib import animation
 import random
 
-def generate_random_uniform(start, end, number):
-    return [random.uniform(start, end) for x in range(number)]
-    
-boids_x = generate_random_uniform(-450,50.0, 50)
-boids_y = generate_random_uniform(300.0,600.0, 50)
-boid_x_velocities = generate_random_uniform(0, 10.0, 50)
-boid_y_velocities = generate_random_uniform(-20.0, 20.0, 50)
+class Boids(object):
 
-boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
+    def __init__(self): 
+        boids_x = self.generate_random_uniform(-450,50.0, 50)
+        boids_y = self.generate_random_uniform(300.0,600.0, 50)
+        boid_x_velocities = self.generate_random_uniform(0, 10.0, 50)
+        boid_y_velocities = self.generate_random_uniform(-20.0, 20.0, 50)
+        self.boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
+        
+            
+    def generate_random_uniform(self, start, end, number):
+        return [random.uniform(start, end) for x in range(number)]
 
-def update_boids(boids):
+    def update_boids(self, boids):
 	xs,ys,xvs,yvs=boids
 	# Fly towards the middle
 	for i in range(len(xs)):
@@ -37,18 +41,20 @@ def update_boids(boids):
 		xs[i]=xs[i]+xvs[i]
 		ys[i]=ys[i]+yvs[i]
 
+    def run_simulation(self):
+         figure = plt.figure()
+         axes = plt.axes(xlim=(-500,1500), ylim=(-500,1500))
+         self.scatter = axes.scatter(self.boids[0],self.boids[1])
+         anim = animation.FuncAnimation(figure, self.animate, frames=50, interval=50)
+         plt.show()
 
-figure=plt.figure()
-axes=plt.axes(xlim=(-500,1500), ylim=(-500,1500))
-scatter=axes.scatter(boids[0],boids[1])
-
-def animate(frame):
-   update_boids(boids)
-   scatter.set_offsets(zip(boids[0],boids[1]))
+    def animate(self, frame):
+        self.update_boids(self.boids)
+        self.scatter.set_offsets(zip(self.boids[0],self.boids[1]))
 
 
-anim = animation.FuncAnimation(figure, animate,
-                               frames=50, interval=50)
 
 if __name__ == "__main__":
-    plt.show()
+    boids = Boids()
+    boids.run_simulation()
+   

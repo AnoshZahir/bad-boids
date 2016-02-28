@@ -9,8 +9,7 @@ setup(
     author = "Anosh Zahir",
     author_email = "anosh.zahir15@imperial.ac.uk",
     packages = find_packages(exclude = ['*test']),
-    scripts = ['scripts/boids'],
-    install_requires = ['argparse', 'matplotlib', 'numpy', 'nose', 'mock' ]
+    install_requires = ['argparse', 'matplotlib', 'numpy', 'nose', 'mock']
 )
 
  

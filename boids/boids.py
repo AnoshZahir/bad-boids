@@ -62,7 +62,7 @@ class Boids(object):
          figure = plt.figure()
          axes = plt.axes(xlim = xlim, ylim = ylim)
          self.scatter = axes.scatter(self.positions[0,:], self.positions[1, :])
-         anim = animation.FuncAnimation(figure, self.animate, frames, interval)
+         anim = animation.FuncAnimation(figure, self.animate, frames = frames, interval = interval)
          plt.show()
 
     def animate(self, frame):

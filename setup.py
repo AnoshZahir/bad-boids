@@ -10,7 +10,7 @@ setup(
     author_email = "anosh.zahir15@imperial.ac.uk",
     packages = find_packages(exclude = ['*test']),
     install_requires = ['argparse', 'matplotlib', 'numpy', 'nose', 'mock'],
-    entry_points={'console_scripts': ['bad_boids=boids:main']},
+    entry_points={'console_scripts': ['bad_boids=boids:main']}
 )
 
  
